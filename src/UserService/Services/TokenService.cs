@@ -23,7 +23,7 @@ namespace UserService.Services
             new Claim("FirstName",tokenDto.FirstName.ToString()),
             new Claim("LastName",tokenDto.LastName.ToString()),
             new Claim("UserName",tokenDto.UserName.ToString()),
-            new Claim(ClaimTypes.Role,tokenDto.Role.ToString()),
+            new Claim(ClaimTypes.Role, tokenDto.Role.ToString()),
             new Claim(ClaimTypes.Email,tokenDto.Email.ToString())
         };
 
