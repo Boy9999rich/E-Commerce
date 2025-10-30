@@ -28,9 +28,42 @@ namespace UserService.Services
             throw new NotImplementedException();
         }
 
-        public Task<LoginResponseDto> LoginUserAsync(UserLoginDto userLoginDto)
+        public async Task<LoginResponseDto> LoginUserAsync(UserLoginDto userLoginDto)
         {
-            throw new NotImplementedException();
+            var user = await _dbContext.Users
+            .FirstOrDefaultAsync(u => u.Email == userLoginDto.Email
+                );
+
+            if (user == null)
+            {
+                throw new Exception("UserName or password incorrect");
+            }
+
+            var checkUserPassword = PasswordHasher.Verify(userLoginDto.Password, user.PasswordHash, user.Salt);
+
+            if (checkUserPassword == false)
+            {
+                throw new Exception("UserName or password incorrect");
+            }
+
+            var userTokenDto = new UserTokenDto
+            {
+                UserId = user.UserId,
+                UserName = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role.Name
+            };
+
+            var token = _tokenService.GenerateToken(userTokenDto);
+
+            var loginResponseDto = new LoginResponseDto()
+            {
+                AccessToken = token,
+            };
+
+            return loginResponseDto;
         }
 
         public async Task<long> SignUpUserAsync(UserRegisterDto userRegisterDto)
