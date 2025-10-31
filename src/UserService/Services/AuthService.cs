@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using UserService.Dtos;
@@ -18,14 +19,69 @@ namespace UserService.Services
             _tokenService = tokenService;
         }
 
-        public Task<LoginResponseDto> GoogleLoginAsync(GoogleAuthDto dto)
+        public async Task<LoginResponseDto> GoogleLoginAsync(GoogleAuthDto dto)
         {
-            throw new NotImplementedException();
+            var payload = await GoogleJsonWebSignature.ValidateAsync(dto.IdToken, new GoogleJsonWebSignature.ValidationSettings());
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == payload.Subject);
+
+            if (user == null)
+            {
+                await GoogleRegisterAsync(dto);
+                user = await _dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == payload.Subject);
+            }
+
+            var userTokenDto = new UserTokenDto
+            {
+                UserId = user.UserId,
+                UserName = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role.Name
+            };
+
+            var token = _tokenService.GenerateToken(userTokenDto);
+
+            var loginResponseDto = new LoginResponseDto
+            {
+                AccessToken = token,
+            };
+
+            return loginResponseDto;
         }
 
-        public Task<long> GoogleRegisterAsync(GoogleAuthDto dto)
+        public async Task<long> GoogleRegisterAsync(GoogleAuthDto dto)
         {
-            throw new NotImplementedException();
+            var payload = await GoogleJsonWebSignature.ValidateAsync(dto.IdToken, new GoogleJsonWebSignature.ValidationSettings());
+
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == payload.Subject);
+
+            var role = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "User");
+            if (role == null)
+                throw new Exception("User roli topilmadi!");
+
+            if (user != null)
+            {
+                return user.UserId;
+            }
+
+            user = new User
+            {
+                Username = payload.Email.Split('@')[0],
+                FirstName = payload.GivenName,
+                LastName = payload.FamilyName,
+                Email = payload.Email,
+                EmailConfirmed = payload.EmailVerified,
+                GoogleId = payload.Subject,
+                GoogleProfilePicture = payload.Picture,
+                RoleId = role.Id,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+            return user.UserId;
         }
 
         public async Task<LoginResponseDto> LoginUserAsync(UserLoginDto userLoginDto)

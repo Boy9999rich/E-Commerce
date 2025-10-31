@@ -30,6 +30,9 @@ namespace UserService.Persistence.EntityConfiguration
             builder.Property(u => u.EmailConfirmed)
                 .HasMaxLength(10);
 
+            builder.Property(t => t.GoogleId).IsRequired(false);
+            builder.Property(t => t.GoogleProfilePicture).IsRequired(false);
+
             builder.Property(u => u.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(255);
