@@ -1,5 +1,6 @@
 
 using UserService.Configurations;
+using UserService.Configurations.Settings;
 
 namespace UserService
 {
@@ -16,7 +17,13 @@ namespace UserService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JWTSettings>();
+            builder.Services.AddSingleton(jwtSettings);
+
             builder.ConfigureDB();
+            builder.ConfigureDI();
+            builder.ConfigureJwt();
+
 
             var app = builder.Build();
 

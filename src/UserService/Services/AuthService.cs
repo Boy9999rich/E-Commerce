@@ -53,6 +53,16 @@ namespace UserService.Services
 
         public async Task<long> GoogleRegisterAsync(GoogleAuthDto dto)
         {
+            var settings = new GoogleJsonWebSignature.ValidationSettings
+            {
+                Audience = new List<string>
+        {
+              "407408718192.apps.googleusercontent.com" // shu joyni to‘g‘ri yoz
+        }
+            };
+
+
+
             var payload = await GoogleJsonWebSignature.ValidateAsync(dto.IdToken, new GoogleJsonWebSignature.ValidationSettings());
 
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == payload.Subject);
@@ -86,9 +96,12 @@ namespace UserService.Services
 
         public async Task<LoginResponseDto> LoginUserAsync(UserLoginDto userLoginDto)
         {
+            if (userLoginDto == null)
+                throw new ArgumentNullException(nameof(userLoginDto));
+
             var user = await _dbContext.Users
-            .FirstOrDefaultAsync(u => u.Email == userLoginDto.Email
-                );
+         .Include(u => u.Role) // agar role kerak bo'lsa
+         .FirstOrDefaultAsync(u => u.Email == userLoginDto.Email);
 
             if (user == null)
             {
