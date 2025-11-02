@@ -1,6 +1,6 @@
 ﻿namespace GateWayApi.Dtos
 {
-    public class RegisterDto
+    public class UserRegisterDto
     {
         public string Username { get; set; }
         public string FirstName { get; set; }

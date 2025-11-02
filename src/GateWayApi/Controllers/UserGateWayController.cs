@@ -17,14 +17,14 @@ namespace GateWayApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<long> Register([FromBody] RegisterDto registerDto)
+        public async Task<long> Register([FromBody] UserRegisterDto registerDto)
         {
             var result = await _userApiService.RegisterUserAsync(registerDto);
             return result;
         }
 
         [HttpPost("login")]
-        public async Task<LoginResponseDto> Login([FromBody] LoginDto loginDto)
+        public async Task<LoginResponseDto> Login([FromBody] UserLoginDto loginDto)
         {
             var result = await _userApiService.LoginUserAsync(loginDto);
             return result;

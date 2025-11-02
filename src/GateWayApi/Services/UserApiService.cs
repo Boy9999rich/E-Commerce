@@ -11,7 +11,7 @@ namespace GateWayApi.Services
             _httpClient = httpClient;
         }
 
-        public async Task<LoginResponseDto> LoginUserAsync(LoginDto loginDto)
+        public async Task<LoginResponseDto> LoginUserAsync(UserLoginDto loginDto)
         {
             var response = await _httpClient.PostAsJsonAsync("api/auth/login", loginDto);
             response.EnsureSuccessStatusCode();
@@ -20,7 +20,7 @@ namespace GateWayApi.Services
                    ?? throw new InvalidOperationException("Invalid response from auth service");
         }
 
-        public async Task<long> RegisterUserAsync(RegisterDto registerDto)
+        public async Task<long> RegisterUserAsync(UserRegisterDto registerDto)
         {
             var response = await _httpClient.PostAsJsonAsync("api/auth/register", registerDto);
             response.EnsureSuccessStatusCode();

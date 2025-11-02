@@ -1,8 +1,8 @@
 ﻿namespace GateWayApi.Dtos
 {
-    public class LoginDto
+    public class UserLoginDto
     {
-        public string EmailOrUserName { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 }
