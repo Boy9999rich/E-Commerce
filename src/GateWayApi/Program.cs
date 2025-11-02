@@ -1,4 +1,6 @@
 
+using GateWayApi.Services;
+
 namespace GateWayApi
 {
     public class Program
@@ -13,6 +15,14 @@ namespace GateWayApi
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddHttpClient<IUserApiService, UserApiService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5048/");
+            });
+
+            builder.Services.AddReverseProxy()
+            .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
             var app = builder.Build();
 
