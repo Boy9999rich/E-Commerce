@@ -1,4 +1,4 @@
-namespace ProductService
+namespace ProductServic
 {
     public class WeatherForecast
     {

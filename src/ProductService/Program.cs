@@ -1,5 +1,7 @@
 
-namespace ProductService
+using ProductServic.Configurations;
+
+namespace ProductServic
 {
     public class Program
     {
@@ -13,6 +15,9 @@ namespace ProductService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.ConfigureDB();
+            builder.ConfigureDI();
 
             var app = builder.Build();
 

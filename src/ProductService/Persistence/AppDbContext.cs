@@ -1,10 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductService.Entities;
+using ProductServic.Entities;
+using ProductServic.Persistence.EntityConfiguration;
 
-namespace ProductService.Persistence
+namespace ProductServic.Persistence
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Product> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+        }
     }
 }

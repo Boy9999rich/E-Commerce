@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProductService.Entities;
+using ProductServic.Entities;
 
-namespace ProductService.Persistence.EntityConfiguration
+namespace ProductServic.Persistence.EntityConfiguration
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
