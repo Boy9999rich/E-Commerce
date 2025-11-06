@@ -9,6 +9,6 @@ namespace OrderService.Dtos.OrderDto
         public DateTime OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string Status { get; set; }
-        public List<OrderItemDetailedDto> Items { get; set; } = new List<OrderItemDetailedDto>();
+        public List<OrderItemmDto> Items { get; set; } = new List<OrderItemmDto>();
     }
 }

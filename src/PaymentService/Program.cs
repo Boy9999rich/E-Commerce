@@ -1,7 +1,7 @@
 
-using OrderService.Configurations;
+using PaymentService.Configurations;
 
-namespace OrderService
+namespace PaymentService
 {
     public class Program
     {
@@ -17,7 +17,6 @@ namespace OrderService
             builder.Services.AddSwaggerGen();
 
             builder.ConfigureDB();
-            builder.ConfigureDI();
 
             var app = builder.Build();
 
