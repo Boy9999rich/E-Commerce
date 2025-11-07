@@ -5,12 +5,12 @@ using PaymentService.Persistence;
 
 namespace PaymentService.Services
 {
-    public class PaymentService : IPaymentService
+    public class PaymentServicess : IPaymentService
     {
         private readonly AppDbContext appDbContext;
         private readonly HttpClient notificationClient;
 
-        public PaymentService(AppDbContext appDbContext, HttpClient notificationClient)
+        public PaymentServicess(AppDbContext appDbContext, HttpClient notificationClient)
         {
             this.appDbContext = appDbContext;
             this.notificationClient = notificationClient;
