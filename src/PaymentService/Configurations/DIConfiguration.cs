@@ -11,13 +11,15 @@ namespace PaymentService.Configurations
 
             builder.Services.AddHttpClient("NotificationClient", client =>
             {
-                client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ServiceUrls:Notification"));
+                client.BaseAddress = new Uri(notificationUrl!);
+                client.Timeout = TimeSpan.FromSeconds(30);
             })
-             .ConfigurePrimaryHttpMessageHandler(() =>
-                 new HttpClientHandler
-                 {
-                     ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                 });
+            .ConfigurePrimaryHttpMessageHandler(() =>
+                new HttpClientHandler
+                {
+                    // Development muhitida SSL sertifikatini tekshirmaslik
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                });
 
             // PaymentService ni DI ga qo'shish, HttpClientFactory orqali uzatish
             builder.Services.AddScoped<IPaymentService, PaymentServicess>(sp =>

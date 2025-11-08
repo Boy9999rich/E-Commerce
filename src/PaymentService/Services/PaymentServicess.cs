@@ -31,19 +31,39 @@ namespace PaymentService.Services
             appDbContext.Payments.Add(payment);
             await appDbContext.SaveChangesAsync();
 
-            // 2. Notification Service’ga yuborish
-            var notificationData = new
+            // 2. Notification Service'ga yuborish
+            try
             {
-                UserId = dto.UserId,
-                Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber,
-                Message = $"To‘lov muvaffaqiyatli amalga oshirildi: {dto.Amount} so‘m"
-            };
+                var notificationData = new
+                {
+                    UserId = dto.UserId,
+                    Email = dto.Email,
+                    PhoneNumber = dto.PhoneNumber,
+                    Message = $"To'lov muvaffaqiyatli amalga oshirildi: {dto.Amount} so'm"
+                };
 
-            var response = await notificationClient.PostAsJsonAsync("https://localhost:5255/api/notifications/send", notificationData);
-            response.EnsureSuccessStatusCode();
+                // HttpClient allaqachon base address bilan sozlangan, shuning uchun faqat relative path ishlatamiz
+                var response = await notificationClient.PostAsJsonAsync("api/notification/send", notificationData);
 
-            return new PaymentResultDto(true, "To‘lov muvaffaqiyatli amalga oshirildi");
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"❌ Notification yuborishda xatolik: {response.StatusCode}");
+                    Console.WriteLine($"❌ Error content: {errorContent}");
+                    // Xatolik bo'lsa ham, to'lov muvaffaqiyatli deb hisoblaymiz
+                }
+                else
+                {
+                    Console.WriteLine("✅ Notification muvaffaqiyatli yuborildi!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Notification yuborishda exception: {ex.Message}");
+                // Xatolik bo'lsa ham, to'lov muvaffaqiyatli deb hisoblaymiz
+            }
+
+            return new PaymentResultDto(true, "To'lov muvaffaqiyatli amalga oshirildi");
         }
     }
 }
