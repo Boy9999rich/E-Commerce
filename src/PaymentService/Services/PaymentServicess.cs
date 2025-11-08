@@ -27,25 +27,21 @@ namespace PaymentService.Services
                 PaymentMethod = dto.PaymentMethod,
                 Status = "Paid"
             };
+
             appDbContext.Payments.Add(payment);
             await appDbContext.SaveChangesAsync();
 
-
-
-
-
-            //// 2. OrderService'ga status update yuborish (HTTP orqali)
-            //// (masalan: PUT /api/orders/{id}/status)
-            //// ...
-
-            // 3. NotificationService’ga yuborish
-            await notificationClient.PostAsJsonAsync("api/notifications/send", new
+            // 2. Notification Service’ga yuborish
+            var notificationData = new
             {
                 UserId = dto.UserId,
                 Email = dto.Email,
                 PhoneNumber = dto.PhoneNumber,
                 Message = $"To‘lov muvaffaqiyatli amalga oshirildi: {dto.Amount} so‘m"
-            });
+            };
+
+            var response = await notificationClient.PostAsJsonAsync("https://localhost:5255/api/notifications/send", notificationData);
+            response.EnsureSuccessStatusCode();
 
             return new PaymentResultDto(true, "To‘lov muvaffaqiyatli amalga oshirildi");
         }

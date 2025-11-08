@@ -1,5 +1,6 @@
 
 using PaymentService.Configurations;
+using PaymentService.Services;
 
 namespace PaymentService
 {
@@ -15,11 +16,6 @@ namespace PaymentService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            builder.Services.AddHttpClient<PaymentService.Services.PaymentServicess>(client =>
-            {
-                client.BaseAddress = new Uri("http://localhost:5121/"); // ?? NotificationService ishlayotgan port
-            });
 
             builder.ConfigureDB();
             builder.ConfigureDI();
