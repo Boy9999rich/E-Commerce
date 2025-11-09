@@ -60,5 +60,10 @@ namespace NotificationService.Services
                 Console.WriteLine($"📱 SMS yuborildi: {dto.PhoneNumber} => {dto.Message}");
             }
         }
+
+        public Task SendSmsAsync(SmsCreateDto dto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
