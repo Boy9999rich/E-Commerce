@@ -1,6 +1,7 @@
 
 using UserService.Configurations;
 using UserService.Configurations.Settings;
+using UserService.Fluent_validation;
 
 namespace UserService
 {
@@ -17,12 +18,15 @@ namespace UserService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            
+
             var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JWTSettings>();
             builder.Services.AddSingleton(jwtSettings);
 
             builder.ConfigureDB();
             builder.ConfigureDI();
             builder.ConfigureJwt();
+            builder.ConfigureFluentValidation();
 
 
             var app = builder.Build();

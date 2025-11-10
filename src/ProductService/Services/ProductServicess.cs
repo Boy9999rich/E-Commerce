@@ -5,11 +5,11 @@ using ProductServic.Persistence;
 
 namespace ProductServic.Services
 {
-    public class ProductService : IProductService
+    public class ProductServicess : IProductService
     {
         private readonly AppDbContext _dbContext;
 
-        public ProductService(AppDbContext dbContext)
+        public ProductServicess(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

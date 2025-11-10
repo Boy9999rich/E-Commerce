@@ -5,6 +5,6 @@ namespace OrderService.Dtos.OrderDto
     public class OrderCreateDto
     {
         public long UserId { get; set; }
-        public List<OrderItemmDto> Items { get; set; } = new List<OrderItemmDto>();
+        public List<OrderItemDetailedDto> Items { get; set; } = new List<OrderItemDetailedDto>();
     }
 }

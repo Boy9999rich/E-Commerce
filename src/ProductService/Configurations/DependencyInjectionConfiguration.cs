@@ -6,7 +6,7 @@ namespace ProductServic.Configurations
     {
         public static void ConfigureDI(this WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IProductService, ProductServicess>();
         }
     }
 }

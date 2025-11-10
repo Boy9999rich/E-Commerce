@@ -1,4 +1,5 @@
-﻿using UserService.Services;
+﻿using UserService.Fluent_validation;
+using UserService.Services;
 
 namespace UserService.Configurations
 {
@@ -8,6 +9,9 @@ namespace UserService.Configurations
         {
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+
+            builder.Services.AddScoped<UserRegisterValidator, UserRegisterValidator>();
+            builder.Services.AddScoped<UserLoginValidator, UserLoginValidator>();
         }
     }
 }

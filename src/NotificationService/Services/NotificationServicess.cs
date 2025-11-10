@@ -61,9 +61,6 @@ namespace NotificationService.Services
             }
         }
 
-        public Task SendSmsAsync(SmsCreateDto dto)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -19,6 +19,7 @@ namespace PaymentService
 
             builder.ConfigureDB();
             builder.ConfigureDI();
+            builder.ConfigureFluentValidation();
 
             var app = builder.Build();
 

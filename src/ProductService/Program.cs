@@ -1,5 +1,6 @@
 
 using ProductServic.Configurations;
+using ProductService.Configurations;
 
 namespace ProductServic
 {
@@ -18,6 +19,7 @@ namespace ProductServic
 
             builder.ConfigureDB();
             builder.ConfigureDI();
+            builder.ConfigureFluentValidation();
 
             var app = builder.Build();
 
