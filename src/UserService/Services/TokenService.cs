@@ -11,9 +11,9 @@ namespace UserService.Services
     {
         private readonly JWTSettings _jwtSettings;
 
-        public TokenService(JWTSettings jwtSettings)
+        public TokenService(IConfiguration configuration)
         {
-            _jwtSettings = jwtSettings;
+            _jwtSettings = configuration.GetSection("Jwt").Get<JWTSettings>()!;
         }
         public string GenerateToken(UserTokenDto tokenDto)
         {

@@ -18,11 +18,10 @@ namespace UserService
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
 
-            var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JWTSettings>();
+            var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JWTSettings>() ?? new JWTSettings();
             builder.Services.AddSingleton(jwtSettings);
-
+            
             builder.ConfigureDB();
             builder.ConfigureDI();
             builder.ConfigureJwt();

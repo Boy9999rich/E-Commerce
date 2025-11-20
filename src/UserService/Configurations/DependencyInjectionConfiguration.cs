@@ -11,7 +11,6 @@ namespace UserService.Configurations
             builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddScoped<UserRegisterValidator, UserRegisterValidator>();
-            builder.Services.AddScoped<UserLoginValidator, UserLoginValidator>();
         }
     }
 }
