@@ -1,4 +1,5 @@
 ﻿using ProductServic.Services;
+using ProductService.Services;
 
 namespace ProductServic.Configurations
 {
@@ -7,6 +8,7 @@ namespace ProductServic.Configurations
         public static void ConfigureDI(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IProductService, ProductServicess>();
+            builder.Services.AddScoped<IImageService, ImageService>();
         }
     }
 }

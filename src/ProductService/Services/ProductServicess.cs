@@ -2,20 +2,25 @@
 using ProductServic.Dtos;
 using ProductServic.Entities;
 using ProductServic.Persistence;
+using ProductService.Services;
 
 namespace ProductServic.Services
 {
     public class ProductServicess : IProductService
     {
         private readonly AppDbContext _dbContext;
+        private readonly IImageService _imageService;
 
-        public ProductServicess(AppDbContext dbContext)
+        public ProductServicess(AppDbContext dbContext, IImageService imageService)
         {
             _dbContext = dbContext;
+            _imageService = imageService;
         }
 
         public async Task<long> CreateAsync(ProductCreateDto dto)
         {
+            string imageUrl = await _imageService.UploadImageAsync(dto.image);
+
             var product = new Product
             {
                 Name = dto.Name,
@@ -23,9 +28,10 @@ namespace ProductServic.Services
                 Price = dto.Price,
                 StockCount = dto.StockCount,
                 CategoryId = dto.CategoryId,
+                ImageUrl = imageUrl
             };
 
-            _dbContext.Products.Add(product);
+            await _dbContext.Products.AddAsync(product);
             await _dbContext.SaveChangesAsync();
             return product.ProductId;
         }

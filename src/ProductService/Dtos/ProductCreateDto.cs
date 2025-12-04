@@ -7,6 +7,6 @@
         public decimal Price { get; set; }
         public int StockCount { get; set; }
         public long CategoryId { get; set; }
-        public IFormFile file { get; set; }
+        public IFormFile image { get; set; }
     }
 }

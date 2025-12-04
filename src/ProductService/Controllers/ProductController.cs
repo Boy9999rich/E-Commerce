@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProductServic.Dtos;
 using ProductServic.Services;
+using ProductService.Services;
 
 namespace ProductServic.Controllers
 {
@@ -9,30 +11,22 @@ namespace ProductServic.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly IImageService _imageService;
+        public ProductController(IProductService productService, IImageService imageService)
         {
             _productService = productService;
+            _imageService = imageService;
         }
 
         [HttpPost("Create")]
 
-        public async Task<IActionResult> Create([FromForm] Dtos.ProductCreateDto dto)
+        public async Task<IActionResult> Create([FromForm] ProductCreateDto dto)
         {
-            if (dto.file != null && dto.file.Length > 0)
-            {
-                // Faylni serverga saqlash yoki cloud storage ga yuklash
-                var fileName = $"{Guid.NewGuid()}_{dto.file.FileName}";
-                var filePath = Path.Combine("wwwroot/images/products", fileName);
 
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.file.CopyToAsync(stream);
-                }
-            }
-
+            // 2. ProductService ichida DBga yozish
             var productId = await _productService.CreateAsync(dto);
+
             return Ok(productId);
         }
 

@@ -24,7 +24,7 @@ namespace ProductService.FluentValidation
             RuleFor(x => x.CategoryId)
                 .GreaterThan(0).WithMessage("CategoryId must be greater than 0.");
 
-            RuleFor(x => x.file)
+            RuleFor(x => x.image)
                 .NotNull().WithMessage("Product image is required.")
                 .Must(f => f.Length > 0).WithMessage("Uploaded file cannot be empty.")
                 .Must(f => f.ContentType.StartsWith("image/")).WithMessage("File must be an image.");

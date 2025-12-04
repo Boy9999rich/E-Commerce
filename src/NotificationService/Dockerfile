@@ -9,5 +9,6 @@ RUN dotnet publish -c Release -o /app /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+EXPOSE 8080
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "NotificationService.dll"]
